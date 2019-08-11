@@ -22,6 +22,11 @@ begin
 
     conn = PG.connect :dbname => config['database'], :user => secrets['username'], 
         :password => secrets['password']
+
+    libvirt_conn = Fog::Compute.new(
+            :provider => "libvirt",
+            :libvirt_uri => "qemu:///system?socket=/var/run/libvirt/libvirt-sock"
+    )
     
     puts "Successfully logged on to PostgreSQL database #{conn.db} as PostgreSQL user #{conn.user}!"
     puts "Looking for new rows with state #{config["state"]} every #{config["seek_interval"]} seconds"
@@ -43,5 +48,13 @@ rescue PG::Error => e
 ensure
 
     conn.close if conn
-    
+
+rescue Fog::Errors::Error => e
+            
+    puts e.message
+
+ensure
+
+    libvirt_conn.close if libvirt_conn
+
 end
