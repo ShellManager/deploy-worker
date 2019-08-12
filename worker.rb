@@ -20,7 +20,7 @@ def run_every(seconds)
     end
 end
 
-def create_vm(name, cpus, memory, volume_capacity)
+def create_vm(name, cpus, memory, volume_capacity, ip)
     # stolen from here https://github.com/andrewgho/genmac
     r_mac = (1..6).collect { "%02x" % [rand 255] }.join(":")
     mac_str = r_mac.split(":")
@@ -46,7 +46,7 @@ begin
                 rows.push(row)
                 puts "Found new pending VM!"
                 puts "Name: #{row["name"]}"
-                create_vm(row["name"], row["cpus"], row["memory"], row["volume_capacity"])
+                create_vm(row["name"], row["cpus"], row["memory"], row["volume_capacity"], row["ip"])
             end
         end
     end
