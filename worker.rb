@@ -26,7 +26,7 @@ def create_vm(id, name, cpus, memory, volume_capacity, ip, config)
     mac = "ae:ae:ae:#{mac}"
     vm = ERB.new(File.read("./vm.erb")).result(binding)
     file = File.open("./#{name}-#{ip}.xml", "w") { |f| f.write(vm) }
-    conn.exec("UPDATE #{config["table"]} SET mac=#{mac} WHERE id=#{id}")
+    return mac
 end
 
 begin
@@ -43,7 +43,8 @@ begin
                 rows.push(row)
                 puts "Found new pending VM!"
                 puts "Name: #{row["name"]}"
-                create_vm(row["id"], row["name"], row["cpus"], row["memory"], row["volume_capacity"], row["ip"], config)
+                mac = create_vm(row["id"], row["name"], row["cpus"], row["memory"], row["volume_capacity"], row["ip"], config)
+                conn.exec("UPDATE #{config["table"]} SET mac=#{mac} WHERE id=#{row["id"]}")
             end
         end
     end
