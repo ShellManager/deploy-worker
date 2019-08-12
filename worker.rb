@@ -22,10 +22,10 @@ end
 
 def create_vm(name, cpus, memory, volume_capacity, ip)
     # stolen from here https://github.com/andrewgho/genmac
-    mac = (1..3).collect { "%02x" % [rand 255] }.join(":")
-    mac = "AE:AE:AE:#{mac}"
+    mac = (1..3).collect { "%02x" % rand(0..255) }.join(":")
+    mac = "ae:ae:ae:#{mac}"
     vm = ERB.new(File.read("./vm.erb")).result(binding)
-    file = file.open("./#{name}-#{ip.gsub!(".", "-")}.xml", "w")
+    file = File.open("./#{name}-#{ip}.xml", "w")
     file.puts vm
     file.close
 end
@@ -33,7 +33,7 @@ end
 begin
 
     conn = PG.connect :dbname => config['database'], :user => secrets['username'], 
-        :password => secrets['password']
+           :password => secrets['password']
     
     puts "Successfully logged on to PostgreSQL database #{conn.db} as PostgreSQL user #{conn.user}!"
     puts "Looking for new rows with state #{config["state"]} every #{config["seek_interval"]} seconds"

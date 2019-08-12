@@ -20,7 +20,7 @@ or other application using the libvirt API.
     <apic/>
   </features>
   <cpu mode='custom' match='exact' check='partial'>
-    <model fallback='allow'>Skylake-Client-IBRS</model>
+    <model fallback='allow'>qemu64</model>
   </cpu>
   <clock offset='utc'>
     <timer name='rtc' tickpolicy='catchup'/>
@@ -45,7 +45,7 @@ or other application using the libvirt API.
     </interface>
     <disk type='file' device='disk'>
       <driver name='qemu' type='qcow2'/>
-      <source file='/home/scorpio/hdd/<%= "#{name}-#{ip.gsub!(".", "-")}" %>'/>
+      <source file='<%= config['base_path'] %>/<%= "#{name}-#{ip.gsub!(".", "-")}" %>'/>
       <target dev='vda' bus='virtio'/>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x05' function='0x0'/>
     </disk>
