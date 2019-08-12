@@ -20,11 +20,12 @@ def run_every(seconds)
     end
 end
 
-def create_vm(name, cpus, memory, volume_capacity, ip)
+def create_vm(id, name, cpus, memory, volume_capacity, ip)
     mac = (1..3).collect { "%02x" % rand(0..255) }.join(":")
     mac = "ae:ae:ae:#{mac}"
     vm = ERB.new(File.read("./vm.erb")).result(binding)
     file = File.open("./#{name}-#{ip}.xml", "w") { |f| f.write(vm) }
+    conn.exec("UPDATE #{config["table"]} SET mac=#{mac} WHERE id=#{id}")
 end
 
 begin
@@ -41,7 +42,7 @@ begin
                 rows.push(row)
                 puts "Found new pending VM!"
                 puts "Name: #{row["name"]}"
-                create_vm(row["name"], row["cpus"], row["memory"], row["volume_capacity"], row["ip"])
+                create_vm(row["id"], row["name"], row["cpus"], row["memory"], row["volume_capacity"], row["ip"])
             end
         end
     end
