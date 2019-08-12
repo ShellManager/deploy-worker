@@ -7,7 +7,7 @@ or other application using the libvirt API.
 
 <domain type='kvm'>
   <name><%= name %></name>
-  <uuid><%= uuid %></uuid>
+  <uuid><%= SecureRandom.uuid %></uuid>
   <memory unit='KiB'><%= memory %></memory>
   <currentMemory unit='KiB'><%= memory %></currentMemory>
   <vcpu placement='static'><%= cpus %></vcpu>
