@@ -57,12 +57,4 @@ ensure
 
     conn.close if conn
 
-rescue Fog::Errors::Error => e
-            
-    puts e.message
-
-ensure
-
-    libvirt_conn.close if libvirt_conn
-
 end
