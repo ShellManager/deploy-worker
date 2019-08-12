@@ -3,3 +3,4 @@ table: vms
 seek_interval: 5
 state: pending
 base_path: /home/scorpio/hdd
+deploy_location: ./deploy.sh

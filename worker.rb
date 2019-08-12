@@ -46,6 +46,17 @@ begin
                 mac = create_vm(row["id"], row["name"], row["cpus"], row["memory"], row["volume_capacity"], row["ip"], config)
                 conn.exec("UPDATE #{config["table"]} SET mac = '#{mac}', status = NULL WHERE id = #{row["id"]}")
                 puts "Updated VM #{row["name"]} with MAC address #{mac}"
+                system("#{config["deploy_location"]} #{row["name"]}-#{row["ip"].gsub(".", "-")} #{row["disk"]}")
+                if $?.exitstatus == 0
+                    puts "Deployed VM #{row["name"]}"
+                else
+                    puts "Failed to deploy VM. Requeuing..."
+                    conn.exec("UPDATE #{config["table"]} SET mac = NULL, status = 'pending' WHERE id = #{row["id"]}")
+                    rows.delete(row)
+                    File.unlink("#{row["name"]}-#{row["ip"].gsub(".", "-")}.xml")
+                    puts "Rolled back changes on row ##{row["id"]}"
+                end
+                
             end
         end
     end
