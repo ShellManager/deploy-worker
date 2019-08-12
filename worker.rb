@@ -22,9 +22,8 @@ end
 
 def create_vm(name, cpus, memory, volume_capacity, ip)
     # stolen from here https://github.com/andrewgho/genmac
-    r_mac = (1..6).collect { "%02x" % [rand 255] }.join(":")
-    mac_str = r_mac.split(":")
-    mac = "AE:AE:AE:#{mac_str[3]}:#{mac_str[4]}:#{mac_str[5]}"
+    r_mac = (1..3).collect { "%02x" % [rand 255] }.join(":")
+    mac = "AE:AE:AE:#{r_mac}"
     uuid = SecureRandom.uuid
     vm = ERB.new(File.read("./vm.erb")).result(binding)
     file = file.open("./vm.conf", "w")
