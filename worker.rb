@@ -44,7 +44,7 @@ begin
                 puts "Found new pending VM!"
                 puts "Name: #{row["name"]}"
                 mac = create_vm(row["id"], row["name"], row["cpus"], row["memory"], row["volume_capacity"], row["ip"], config)
-                conn.exec("UPDATE #{config["table"]} SET mac=\"#{mac}\" AND status=null WHERE id=#{row["id"]}")
+                conn.exec("UPDATE #{config["table"]} SET mac=\"#{mac}\", status=NULL WHERE id=#{row["id"]}")
                 puts "Updated VM #{row["name"]} with MAC address #{mac}"
             end
         end
