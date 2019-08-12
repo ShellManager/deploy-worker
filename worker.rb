@@ -25,7 +25,7 @@ def create_vm(name, cpus, memory, volume_capacity, ip)
     mac = (1..3).collect { "%02x" % [rand 255] }.join(":")
     mac = "AE:AE:AE:#{mac}"
     vm = ERB.new(File.read("./vm.erb")).result(binding)
-    file = file.open("./vm.xml", "w")
+    file = file.open("./#{name}-#{ip}.xml", "w")
     file.puts vm
     file.close
 end
