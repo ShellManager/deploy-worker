@@ -21,6 +21,7 @@ def run_every(seconds)
 end
 
 def create_vm(id, name, cpus, memory, volume_capacity, ip)
+    base_path = config["base_path"]
     mac = (1..3).collect { "%02x" % rand(0..255) }.join(":")
     mac = "ae:ae:ae:#{mac}"
     vm = ERB.new(File.read("./vm.erb")).result(binding)
