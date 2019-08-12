@@ -20,7 +20,7 @@ def run_every(seconds)
     end
 end
 
-def create_vm(id, name, cpus, memory, volume_capacity, ip)
+def create_vm(id, name, cpus, memory, volume_capacity, ip, config)
     base_path = config["base_path"]
     mac = (1..3).collect { "%02x" % rand(0..255) }.join(":")
     mac = "ae:ae:ae:#{mac}"
@@ -43,7 +43,7 @@ begin
                 rows.push(row)
                 puts "Found new pending VM!"
                 puts "Name: #{row["name"]}"
-                create_vm(row["id"], row["name"], row["cpus"], row["memory"], row["volume_capacity"], row["ip"])
+                create_vm(row["id"], row["name"], row["cpus"], row["memory"], row["volume_capacity"], row["ip"], config)
             end
         end
     end
