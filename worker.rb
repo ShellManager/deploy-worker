@@ -21,13 +21,10 @@ def run_every(seconds)
 end
 
 def create_vm(name, cpus, memory, volume_capacity, ip)
-    # stolen from here https://github.com/andrewgho/genmac
     mac = (1..3).collect { "%02x" % rand(0..255) }.join(":")
     mac = "ae:ae:ae:#{mac}"
     vm = ERB.new(File.read("./vm.erb")).result(binding)
-    file = File.open("./#{name}-#{ip}.xml", "w")
-    file.puts vm
-    file.close
+    file = File.open("./#{name}-#{ip}.xml", "w") { |f| f.write(vm) }
 end
 
 begin
